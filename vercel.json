@@ -1,0 +1,7 @@
+{
+  "buildCommand": "pnpm install && pnpm --filter @specforge/web build",
+  "outputDirectory": "apps/web/.next",
+  "framework": "nextjs",
+  "installCommand": "pnpm install",
+  "regions": ["iad1"]
+}

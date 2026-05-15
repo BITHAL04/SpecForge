@@ -1,0 +1,29 @@
+import { cn } from "@/lib/utils/cn";
+
+export function Avatar({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn(
+        "relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full border border-border",
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}
+
+export function AvatarFallback({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn(
+        "flex h-full w-full items-center justify-center rounded-full bg-primary/20 text-xs font-medium text-primary",
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}

@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 95%;
+    --card: 0 0% 4%;
+    --card-foreground: 0 0% 95%;
+    --popover: 0 0% 4%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 240 5.9% 10%;
+    --secondary: 0 0% 9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 0 0% 9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 12%;
+    --input: 0 0% 12%;
+    --ring: 0 0% 83.9%;
+    --radius: 0.5rem;
+    --sidebar-width: 240px;
+    --sidebar-collapsed: 56px;
+    --linear-accent: 234 89% 74%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  html, body, #root {
+    height: 100%;
+  }
+  html {
+    @apply bg-background;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  ::selection {
+    @apply bg-white/20 text-white;
+  }
+}
+
+@layer utilities {
+  .hero-title {
+    letter-spacing: -0.04em;
+    line-height: 0.95;
+  }
+  .text-gradient {
+    @apply bg-gradient-to-b from-white to-white/60 bg-clip-text text-transparent;
+  }
+  .text-gradient-accent {
+    @apply bg-gradient-to-r from-[#5E6AD2] via-[#8B5CF6] to-[#5E6AD2] bg-clip-text text-transparent;
+  }
+  .glass {
+    @apply bg-black/40 backdrop-blur-xl border border-white/[0.04];
+  }
+  .linear-border {
+    @apply border border-white/[0.06];
+  }
+  .linear-surface {
+    @apply bg-[#080808] border border-white/[0.06] shadow-linear-surface;
+  }
+  .grid-pattern {
+    background-image: linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 64px 64px;
+  }
+  .linear-glow {
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.06), 0 8px 40px rgba(0, 0, 0, 0.5);
+  }
+  .linear-button {
+    @apply relative flex items-center justify-center rounded-full bg-white/5 border border-white/[0.08] text-sm font-medium text-white shadow-inner-border transition-all hover:bg-white/10 hover:shadow-inner-border-hover;
+  }
+}

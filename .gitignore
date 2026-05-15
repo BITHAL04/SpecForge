@@ -1,0 +1,56 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Next.js
+apps/web/.next/
+apps/web/out/
+
+# Python
+apps/api/.venv/
+apps/api/__pycache__/
+apps/api/**/__pycache__/
+apps/api/.pytest_cache/
+apps/api/*.egg-info/
+apps/api/dist/
+apps/api/build/
+
+# Environment
+.env
+.env.local
+.env.*.local
+apps/api/.env
+apps/web/.env.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Turbo
+.turbo/
+
+# Coverage
+coverage/
+htmlcov/
+.coverage
+
+# Docker volumes
+docker/data/
+
+# Build
+dist/
+build/
+
+# Local databases
+**/specforge.db

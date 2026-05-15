@@ -1,0 +1,23 @@
+# ─── SpecForge Web (production) ───
+FROM node:20-alpine AS base
+RUN corepack enable && corepack prepare pnpm@9 --activate
+
+WORKDIR /app
+ENV NODE_ENV=production
+ENV NEXT_TELEMETRY_DISABLED=1
+
+COPY package.json pnpm-workspace.yaml ./
+COPY packages/shared/package.json packages/shared/
+COPY apps/web/package.json apps/web/
+
+RUN pnpm install --frozen-lockfile || pnpm install
+
+COPY packages/shared/ packages/shared/
+COPY apps/web/ apps/web/
+
+WORKDIR /app/apps/web
+
+RUN pnpm build
+
+EXPOSE 3000
+CMD ["pnpm", "start"]

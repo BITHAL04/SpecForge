@@ -1,0 +1,24 @@
+# Local development — PostgreSQL only
+# Run API and Web natively for hot reload
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: specforge-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: specforge
+      POSTGRES_PASSWORD: specforge
+      POSTGRES_DB: specforge
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init-db.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U specforge"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  postgres_data:
