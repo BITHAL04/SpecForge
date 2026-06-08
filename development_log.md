@@ -6,3 +6,4 @@ add utility functions
 improve error handling
 optimize application workflow
 refactor backend services
+add configuration files
