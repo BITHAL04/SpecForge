@@ -10,3 +10,4 @@ add configuration files
 update API integration
 enhance validation logic
 fix edge cases
+improve response handling
