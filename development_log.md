@@ -12,3 +12,4 @@ enhance validation logic
 fix edge cases
 improve response handling
 update documentation
+add testing scripts
