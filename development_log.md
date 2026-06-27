@@ -14,3 +14,4 @@ improve response handling
 update documentation
 add testing scripts
 improve code readability
+optimize performance
