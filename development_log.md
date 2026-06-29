@@ -15,3 +15,4 @@ update documentation
 add testing scripts
 improve code readability
 optimize performance
+clean unused dependencies
