@@ -16,3 +16,4 @@ add testing scripts
 improve code readability
 optimize performance
 clean unused dependencies
+update project documentation
