@@ -17,3 +17,4 @@ improve code readability
 optimize performance
 clean unused dependencies
 update project documentation
+fix deployment issues
