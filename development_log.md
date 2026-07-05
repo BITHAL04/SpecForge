@@ -18,3 +18,4 @@ optimize performance
 clean unused dependencies
 update project documentation
 fix deployment issues
+production cleanup
