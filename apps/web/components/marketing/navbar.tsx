@@ -58,7 +58,7 @@ export function Navbar() {
               dashboard →
             </Link>
             <div className="hidden md:block">
-              <UserButton afterSignOutUrl="/login" />
+              <UserButton />
             </div>
           </Show>
 
