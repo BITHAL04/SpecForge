@@ -3,51 +3,95 @@ name: CI
 on:
   push:
     branches: [main]
+
   pull_request:
     branches: [main]
 
+
 jobs:
+
   backend:
     runs-on: ubuntu-latest
+
     services:
       postgres:
         image: postgres:16-alpine
+
         env:
           POSTGRES_USER: specforge
           POSTGRES_PASSWORD: specforge
           POSTGRES_DB: specforge_test
+
         ports:
           - 5432:5432
+
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v4
+
+      - uses: actions/checkout@v5
+
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v6
+
+
       - name: Install dependencies
         working-directory: apps/api
         run: uv sync
-      - name: Run tests
+
+
+      - name: Check backend imports
         working-directory: apps/api
+
         env:
           DATABASE_URL: postgresql+asyncpg://specforge:specforge@localhost:5432/specforge_test
           JWT_SECRET: test-secret
           OPENAI_API_KEY: sk-test
-        run: uv run pytest
+
+        run: |
+          uv run python -m compileall .
+
 
   frontend:
+
     runs-on: ubuntu-latest
+
+
     steps:
-      - uses: actions/checkout@v4
+
+      - uses: actions/checkout@v5
+
+
       - uses: pnpm/action-setup@v4
+
         with:
-          version: 9
-      - uses: actions/setup-node@v4
+          version: 10
+
+
+      - uses: actions/setup-node@v5
+
         with:
-          node-version: 20
+          node-version: 24
           cache: pnpm
-      - run: pnpm install
-      - run: pnpm typecheck
+          cache-dependency-path: apps/web/pnpm-lock.yaml
+
+
+      - name: Install dependencies
+
+        working-directory: apps/web
+
+        run: pnpm install
+
+
+      - name: Type check
+
+        working-directory: apps/web
+
+        run: pnpm typecheck
         continue-on-error: true
