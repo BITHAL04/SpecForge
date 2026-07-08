@@ -1,8 +1,11 @@
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ||
-  (process.env.NODE_ENV === "production"
-    ? "https://specforge-api.up.railway.app/api/v1"
-    : "http://localhost:8000/api/v1");
+  typeof window === "undefined"
+    ? process.env.API_URL ||
+      process.env.NEXT_PUBLIC_API_URL ||
+      (process.env.NODE_ENV === "production"
+        ? "https://specforge-api.up.railway.app/api/v1"
+        : "http://localhost:8000/api/v1")
+    : "/api/backend";
 
 export class ApiError extends Error {
   constructor(
