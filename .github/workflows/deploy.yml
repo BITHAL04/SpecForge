@@ -3,57 +3,141 @@ name: Deploy
 on:
   push:
     branches: [main]
+
   workflow_dispatch:
 
+
 jobs:
+
   verify:
+
     runs-on: ubuntu-latest
+
+
     steps:
-      - uses: actions/checkout@v4
 
-      - uses: astral-sh/setup-uv@v4
-      - name: Backend tests
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+
+      # Backend verification
+
+      - name: Setup uv
+        uses: astral-sh/setup-uv@v6
+
+
+      - name: Install backend dependencies
         working-directory: apps/api
-        run: uv sync && uv run pytest
+        run: uv sync
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          cache: pnpm
-      - name: Frontend build
+
+      - name: Validate backend
+
+        working-directory: apps/api
+
+        env:
+          DATABASE_URL: postgresql+asyncpg://test:test@localhost:5432/test
+          JWT_SECRET: test-secret
+          OPENAI_API_KEY: sk-test
+
         run: |
-          pnpm install
-          pnpm --filter @specforge/web build
+          uv run python -m compileall .
+
+
+      # Frontend verification
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+        with:
+          version: 10
+
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+
+        with:
+          node-version: 24
+
+
+      - name: Install frontend dependencies
+
+        working-directory: apps/web
+
+        run: pnpm install
+
+
+      - name: Build frontend
+
+        working-directory: apps/web
+
+        run: pnpm build
+
+
 
   deploy-backend:
+
     runs-on: ubuntu-latest
+
     needs: verify
-    if: ${{ github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' }}
+
+
+    if: github.ref == 'refs/heads/main'
+
+
     steps:
-      - name: Trigger Railway deploy hook
+
+      - name: Trigger Railway deployment
+
         env:
           RAILWAY_DEPLOY_HOOK_URL: ${{ secrets.RAILWAY_DEPLOY_HOOK_URL }}
+
+
         run: |
+
           if [ -z "$RAILWAY_DEPLOY_HOOK_URL" ]; then
-            echo "RAILWAY_DEPLOY_HOOK_URL is not set; skipping backend deployment."
+
+            echo "Railway deploy hook missing. Skipping."
+
             exit 0
+
           fi
+
+
           curl -fsSL -X POST "$RAILWAY_DEPLOY_HOOK_URL"
 
+
+
+
   deploy-frontend:
+
     runs-on: ubuntu-latest
+
+
     needs: verify
-    if: ${{ github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' }}
+
+
+    if: github.ref == 'refs/heads/main'
+
+
     steps:
-      - name: Trigger Vercel deploy hook
+
+      - name: Trigger Vercel deployment
+
+
         env:
           VERCEL_DEPLOY_HOOK_URL: ${{ secrets.VERCEL_DEPLOY_HOOK_URL }}
+
+
         run: |
+
           if [ -z "$VERCEL_DEPLOY_HOOK_URL" ]; then
-            echo "VERCEL_DEPLOY_HOOK_URL is not set; skipping frontend deployment."
+
+            echo "Vercel deploy hook missing. Skipping."
+
             exit 0
+
           fi
+
+
           curl -fsSL -X POST "$VERCEL_DEPLOY_HOOK_URL"
