@@ -1,12 +1,28 @@
 import { SignUp } from "@clerk/nextjs";
 
+const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
 export default function SignupPage() {
+  if (!clerkPublishableKey) {
+    return (
+      <div className="flex w-full items-center justify-center px-6 py-16 text-center">
+        <div className="max-w-md rounded-2xl border border-white/[0.08] bg-white/[0.03] p-8 shadow-2xl backdrop-blur-sm">
+          <h1 className="text-2xl font-bold text-white">Authentication is not configured</h1>
+          <p className="mt-3 text-sm leading-6 text-zinc-400">
+            Set NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY in your deployment environment, then redeploy.
+            The signup page will start working once Clerk is initialized with a production key.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex items-center justify-center w-full">
-      <SignUp 
-        routing="path" 
-        path="/signup" 
-        signInUrl="/login" 
+      <SignUp
+        routing="path"
+        path="/signup"
+        signInUrl="/login"
         forceRedirectUrl="/dashboard"
         appearance={{
           variables: {

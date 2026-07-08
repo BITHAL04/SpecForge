@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles } from "lucide-react";
-import { isAuthenticated } from "@/lib/auth/session";
+import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 
 const navItems = [
   { label: "features", href: "#features" },
@@ -14,11 +14,6 @@ const navItems = [
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
-  const [authed, setAuthed] = useState(false);
-
-  useEffect(() => {
-    setAuthed(isAuthenticated());
-  }, []);
 
   return (
     <nav className="fixed left-0 top-0 z-50 w-full bg-gradient-to-b from-background/90 to-transparent py-6 backdrop-blur-[4px] md:py-10">
@@ -43,20 +38,29 @@ export function Navbar() {
         </div>
 
         <div className="col-span-6 flex items-center justify-end gap-4 md:col-span-3">
-          {!authed && (
+          <Show when="signed-out">
+            <SignInButton mode="modal">
+              <button className="hidden text-sm lowercase text-zinc-400 transition-colors hover:text-white md:block">
+                log in
+              </button>
+            </SignInButton>
+            <SignUpButton mode="modal">
+              <button className="hidden rounded-full bg-white px-5 py-2 text-sm font-medium lowercase text-black transition-colors hover:bg-zinc-200 md:block">
+                get started →
+              </button>
+            </SignUpButton>
+          </Show>
+          <Show when="signed-in">
             <Link
-              href="/login"
-              className="hidden text-sm lowercase text-zinc-400 transition-colors hover:text-white md:block"
+              href="/dashboard"
+              className="hidden rounded-full bg-white px-5 py-2 text-sm font-medium lowercase text-black transition-colors hover:bg-zinc-200 md:block"
             >
-              log in
+              dashboard →
             </Link>
-          )}
-          <Link
-            href={authed ? "/dashboard" : "/signup"}
-            className="hidden rounded-full bg-white px-5 py-2 text-sm font-medium lowercase text-black transition-colors hover:bg-zinc-200 md:block"
-          >
-            {authed ? "dashboard →" : "get started →"}
-          </Link>
+            <div className="hidden md:block">
+              <UserButton afterSignOutUrl="/login" />
+            </div>
+          </Show>
 
           <button
             className="relative z-50 flex h-8 w-8 flex-col items-center justify-center gap-1.5 md:hidden"
@@ -97,18 +101,30 @@ export function Navbar() {
                 {item.label}
               </Link>
             ))}
-            {!authed && (
-              <Link href="/login" className="text-lg lowercase text-zinc-200 hover:text-white" onClick={() => setIsOpen(false)}>
-                log in
+            <Show when="signed-out">
+              <SignInButton mode="modal">
+                <button className="text-left text-lg lowercase text-zinc-200 hover:text-white" onClick={() => setIsOpen(false)}>
+                  log in
+                </button>
+              </SignInButton>
+              <SignUpButton mode="modal">
+                <button
+                  className="rounded-full bg-white px-5 py-3 text-center text-lg font-medium lowercase text-black transition-colors hover:bg-zinc-200"
+                  onClick={() => setIsOpen(false)}
+                >
+                  get started →
+                </button>
+              </SignUpButton>
+            </Show>
+            <Show when="signed-in">
+              <Link
+                href="/dashboard"
+                className="rounded-full bg-white px-5 py-3 text-center text-lg font-medium lowercase text-black transition-colors hover:bg-zinc-200"
+                onClick={() => setIsOpen(false)}
+              >
+                dashboard →
               </Link>
-            )}
-            <Link
-              href={authed ? "/dashboard" : "/signup"}
-              className="rounded-full bg-white px-5 py-3 text-center text-lg font-medium lowercase text-black transition-colors hover:bg-zinc-200"
-              onClick={() => setIsOpen(false)}
-            >
-              {authed ? "dashboard →" : "get started →"}
-            </Link>
+            </Show>
           </motion.div>
         )}
       </AnimatePresence>

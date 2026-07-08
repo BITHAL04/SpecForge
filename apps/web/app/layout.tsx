@@ -4,6 +4,8 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Providers } from "./providers";
 import "./globals.css";
 
+const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -21,12 +23,12 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <body className={`${inter.variable} ${outfit.variable} font-sans h-full antialiased bg-background text-foreground`}>
+    <html lang="en">
+      <body className={`${inter.variable} ${outfit.variable} font-sans h-full antialiased bg-background text-foreground`}>
+        <ClerkProvider publishableKey={clerkPublishableKey}>
           <Providers>{children}</Providers>
-        </body>
-      </html>
-    </ClerkProvider>
+        </ClerkProvider>
+      </body>
+    </html>
   );
 }

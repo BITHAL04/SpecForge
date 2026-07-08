@@ -63,6 +63,9 @@ PORT=8000
 | `NEXT_PUBLIC_API_URL` | Yes | — | Backend API base URL |
 | `NEXT_PUBLIC_APP_URL` | No | — | Frontend URL for metadata |
 | `NEXT_PUBLIC_SENTRY_DSN` | No | — | Frontend error monitoring endpoint |
+| `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY` | Yes | — | Clerk frontend key for auth UI |
+| `NEXT_PUBLIC_CLERK_SIGN_IN_URL` | No | `/login` | Public sign-in route |
+| `NEXT_PUBLIC_CLERK_SIGN_UP_URL` | No | `/signup` | Public sign-up route |
 
 ### Example
 
@@ -70,6 +73,9 @@ PORT=8000
 NEXT_PUBLIC_API_URL=http://localhost:8000/api/v1
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 NEXT_PUBLIC_SENTRY_DSN=
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/login
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/signup
 ```
 
 ### Vercel Production
@@ -78,6 +84,9 @@ NEXT_PUBLIC_SENTRY_DSN=
 NEXT_PUBLIC_API_URL=https://specforge-api.up.railway.app/api/v1
 NEXT_PUBLIC_APP_URL=https://specforge.vercel.app
 NEXT_PUBLIC_SENTRY_DSN=https://...
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_live_...
+NEXT_PUBLIC_CLERK_SIGN_IN_URL=/login
+NEXT_PUBLIC_CLERK_SIGN_UP_URL=/signup
 ```
 
 ## Docker Compose
