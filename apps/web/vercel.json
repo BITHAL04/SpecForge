@@ -3,5 +3,11 @@
   "outputDirectory": ".next",
   "framework": "nextjs",
   "installCommand": "cd ../.. && pnpm install",
-  "regions": ["iad1"]
+  "regions": ["iad1"],
+  "rewrites": [
+    {
+      "source": "/api/backend/:path*",
+      "destination": "https://specforge-api.up.railway.app/api/v1/:path*"
+    }
+  ]
 }
