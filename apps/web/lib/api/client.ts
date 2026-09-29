@@ -1,11 +1,14 @@
 function resolveApiUrl(): string {
+  if (typeof window !== "undefined") {
+    return "/api/backend";
+  }
+
   const configuredUrl =
-    process.env.NEXT_PUBLIC_API_URL || process.env.API_URL ||
-    (typeof window === "undefined"
-      ? process.env.NODE_ENV === "production"
-        ? "https://specforge-api.up.railway.app/api/v1"
-        : "http://localhost:8000/api/v1"
-      : "/api/backend");
+    process.env.NEXT_PUBLIC_API_URL ||
+    process.env.API_URL ||
+    (process.env.NODE_ENV === "production"
+      ? "https://specforge-api.up.railway.app/api/v1"
+      : "http://localhost:8000/api/v1");
 
   if (configuredUrl.startsWith("/")) {
     return configuredUrl;
