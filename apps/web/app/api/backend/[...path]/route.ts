@@ -24,10 +24,22 @@ async function proxyRequest(request: Request, pathSegments: string[]) {
   const method = request.method.toUpperCase();
   const body = method === "GET" || method === "HEAD" ? undefined : await request.arrayBuffer();
 
-  return fetch(targetUrl, {
+  const upstreamResponse = await fetch(targetUrl, {
     method,
     headers,
     body,
+  });
+
+  const responseHeaders = new Headers(upstreamResponse.headers);
+  responseHeaders.delete("content-encoding");
+  responseHeaders.delete("content-length");
+  responseHeaders.delete("transfer-encoding");
+  responseHeaders.delete("connection");
+
+  return new Response(upstreamResponse.body, {
+    status: upstreamResponse.status,
+    statusText: upstreamResponse.statusText,
+    headers: responseHeaders,
   });
 }
 
