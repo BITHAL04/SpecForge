@@ -109,6 +109,8 @@ docker compose -f docker/docker-compose.prod.yml up --build
 2. Push to `main` or run the `Deploy` workflow manually.
 3. The workflow runs tests, builds the frontend, then triggers the deployment hooks.
 
+If the frontend workflow is skipping, the Vercel deploy hook secret is missing in GitHub Actions and the deploy job will now fail with a clear message instead of silently doing nothing.
+
 ## Project Structure Quick Reference
 
 | Path | Purpose |

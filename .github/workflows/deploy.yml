@@ -132,12 +132,8 @@ jobs:
         run: |
 
           if [ -z "$VERCEL_DEPLOY_HOOK_URL" ]; then
-
-            echo "Vercel deploy hook missing. Skipping."
-
-            exit 0
-
+            echo "Missing Vercel deployment hook. Set VERCEL_DEPLOY_HOOK_URL in GitHub Secrets so the frontend can redeploy."
+            exit 1
           fi
-
 
           curl -fsSL -X POST "$VERCEL_DEPLOY_HOOK_URL"
