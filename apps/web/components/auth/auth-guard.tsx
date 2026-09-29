@@ -62,7 +62,7 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
           }
         }
 
-        setError("Unable to complete auth. Please verify the Vercel API URL and backend health.");
+        setError("Unable to complete auth. Please try again in a moment.");
         clearTokens();
         window.setTimeout(() => router.replace("/login"), 1200);
       } finally {
