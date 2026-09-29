@@ -3,7 +3,7 @@ function resolveApiUrl(): string {
     process.env.NEXT_PUBLIC_API_URL || process.env.API_URL ||
     (typeof window === "undefined"
       ? process.env.NODE_ENV === "production"
-        ? "/api/backend"
+        ? "https://specforge-api.up.railway.app/api/v1"
         : "http://localhost:8000/api/v1"
       : "/api/backend");
 
