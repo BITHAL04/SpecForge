@@ -1,17 +1,11 @@
-import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
-const isPublicRoute = createRouteMatcher([
-  "/login(.*)",
-  "/signup(.*)",
-  "/sign-in(.*)",
-  "/sign-up(.*)",
-]);
-
-export default clerkMiddleware(async (auth, request) => {
-  if (!isPublicRoute(request)) {
-    await auth.protect();
-  }
-});
+// Authentication is checked by the client-side AuthGuard. The app supports
+// both local API tokens and Clerk sessions, so Clerk middleware cannot be the
+// sole gate here (it would reject users signed in through the local API).
+export default function middleware() {
+  return NextResponse.next();
+}
 
 export const config = {
   matcher: [
