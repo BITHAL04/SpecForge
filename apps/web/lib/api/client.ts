@@ -1,11 +1,25 @@
-const API_URL =
-  typeof window === "undefined"
-    ? process.env.API_URL ||
-      process.env.NEXT_PUBLIC_API_URL ||
-      (process.env.NODE_ENV === "production"
-        ? "https://specforge-api.up.railway.app/api/v1"
-        : "http://localhost:8000/api/v1")
-    : "/api/backend";
+function resolveApiUrl(): string {
+  const configuredUrl =
+    process.env.NEXT_PUBLIC_API_URL || process.env.API_URL ||
+    (typeof window === "undefined"
+      ? process.env.NODE_ENV === "production"
+        ? "/api/backend"
+        : "http://localhost:8000/api/v1"
+      : "/api/backend");
+
+  if (configuredUrl.startsWith("/")) {
+    return configuredUrl;
+  }
+
+  const url = new URL(configuredUrl);
+  if (url.pathname === "/" || url.pathname === "") {
+    url.pathname = "/api/v1";
+  }
+
+  return url.toString().replace(/\/$/, "");
+}
+
+const API_URL = resolveApiUrl();
 
 export class ApiError extends Error {
   constructor(

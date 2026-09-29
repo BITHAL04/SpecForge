@@ -1,12 +1,19 @@
-const BACKEND_BASE_URL =
-  process.env.API_URL ||
-  process.env.NEXT_PUBLIC_API_URL ||
-  (process.env.NODE_ENV === "production"
-    ? "https://specforge-api.up.railway.app/api/v1"
-    : "http://localhost:8000/api/v1");
+import { API_URL } from "@/lib/api/client";
 
 async function proxyRequest(request: Request, pathSegments: string[]) {
-  const targetUrl = new URL(pathSegments.join("/"), `${BACKEND_BASE_URL.replace(/\/$/, "")}/`);
+  if (API_URL.startsWith("/")) {
+    return new Response(
+      JSON.stringify({
+        detail: "Backend URL is not configured. Set API_URL or NEXT_PUBLIC_API_URL in Vercel before deploying.",
+      }),
+      {
+        status: 503,
+        headers: { "content-type": "application/json" },
+      },
+    );
+  }
+
+  const targetUrl = new URL(pathSegments.join("/"), `${API_URL.replace(/\/$/, "")}/`);
   const incomingUrl = new URL(request.url);
   targetUrl.search = incomingUrl.search;
 
