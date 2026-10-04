@@ -6,6 +6,10 @@ import "./globals.css";
 
 const clerkPublishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 
+if (!clerkPublishableKey) {
+  throw new Error("NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY must be set for Clerk auth.");
+}
+
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -25,7 +29,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body className={`${inter.variable} ${outfit.variable} font-sans h-full antialiased bg-background text-foreground`}>
-        <ClerkProvider publishableKey={clerkPublishableKey}>
+        <ClerkProvider publishableKey={clerkPublishableKey} signInUrl="/login" signUpUrl="/signup">
           <Providers>{children}</Providers>
         </ClerkProvider>
       </body>

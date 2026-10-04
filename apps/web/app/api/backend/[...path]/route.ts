@@ -36,7 +36,9 @@ async function proxyRequest(request: Request, pathSegments: string[]) {
   responseHeaders.delete("transfer-encoding");
   responseHeaders.delete("connection");
 
-  return new Response(upstreamResponse.body, {
+  const responseBody = await upstreamResponse.text();
+
+  return new Response(responseBody, {
     status: upstreamResponse.status,
     statusText: upstreamResponse.statusText,
     headers: responseHeaders,
