@@ -7,6 +7,15 @@ import { useUser } from "@clerk/nextjs";
 import { getMe, clerkAuth } from "@/lib/api/auth";
 import { clearTokens, isAuthenticated } from "@/lib/auth/session";
 
+function getClerkEmail(user: ReturnType<typeof useUser>["user"]): string | null {
+  return (
+    user?.primaryEmailAddress?.emailAddress ??
+    user?.emailAddresses.find((entry) => entry.id === user.primaryEmailAddressId)?.emailAddress ??
+    user?.emailAddresses[0]?.emailAddress ??
+    null
+  );
+}
+
 export function AuthGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const { isLoaded, isSignedIn, user } = useUser();
@@ -23,13 +32,18 @@ export function AuthGuard({ children }: { children: React.ReactNode }) {
     }, 15000);
 
     async function syncClerkSession() {
-      const email = user?.primaryEmailAddress?.emailAddress;
+      const clerkUser = user;
+      if (!clerkUser) {
+        throw new Error("Clerk user is not available");
+      }
+
+      const email = getClerkEmail(clerkUser);
       if (!email) {
         throw new Error("No email associated with Clerk user");
       }
 
-      const clerkId = user.id;
-      const name = user.fullName || user.username || "Clerk User";
+      const clerkId = clerkUser.id;
+      const name = clerkUser.fullName || clerkUser.username || "Clerk User";
 
       await clerkAuth(email, clerkId, name);
       setReady(true);
