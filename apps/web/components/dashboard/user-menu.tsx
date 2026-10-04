@@ -21,7 +21,7 @@ export function UserMenu({ collapsed }: { collapsed?: boolean }) {
 
   function handleLogout() {
     logout();
-    router.push("/login");
+    router.push("/");
   }
 
   return (

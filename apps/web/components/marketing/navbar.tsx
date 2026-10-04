@@ -4,7 +4,6 @@ import { useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles } from "lucide-react";
-import { Show, SignInButton, SignUpButton, UserButton } from "@clerk/nextjs";
 
 const navItems = [
   { label: "features", href: "#features" },
@@ -38,29 +37,18 @@ export function Navbar() {
         </div>
 
         <div className="col-span-6 flex items-center justify-end gap-4 md:col-span-3">
-          <Show when="signed-out">
-            <SignInButton mode="modal">
-              <button className="hidden text-sm lowercase text-zinc-400 transition-colors hover:text-white md:block">
-                log in
-              </button>
-            </SignInButton>
-            <SignUpButton mode="modal">
-              <button className="hidden rounded-full bg-white px-5 py-2 text-sm font-medium lowercase text-black transition-colors hover:bg-zinc-200 md:block">
-                get started →
-              </button>
-            </SignUpButton>
-          </Show>
-          <Show when="signed-in">
-            <Link
-              href="/dashboard"
-              className="hidden rounded-full bg-white px-5 py-2 text-sm font-medium lowercase text-black transition-colors hover:bg-zinc-200 md:block"
-            >
-              dashboard →
-            </Link>
-            <div className="hidden md:block">
-              <UserButton />
-            </div>
-          </Show>
+          <Link
+            href="/dashboard"
+            className="hidden text-sm lowercase text-zinc-400 transition-colors hover:text-white md:block"
+          >
+            dashboard
+          </Link>
+          <Link
+            href="/dashboard"
+            className="hidden rounded-full bg-white px-5 py-2 text-sm font-medium lowercase text-black transition-colors hover:bg-zinc-200 md:block"
+          >
+            get started →
+          </Link>
 
           <button
             className="relative z-50 flex h-8 w-8 flex-col items-center justify-center gap-1.5 md:hidden"
@@ -101,30 +89,20 @@ export function Navbar() {
                 {item.label}
               </Link>
             ))}
-            <Show when="signed-out">
-              <SignInButton mode="modal">
-                <button className="text-left text-lg lowercase text-zinc-200 hover:text-white" onClick={() => setIsOpen(false)}>
-                  log in
-                </button>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <button
-                  className="rounded-full bg-white px-5 py-3 text-center text-lg font-medium lowercase text-black transition-colors hover:bg-zinc-200"
-                  onClick={() => setIsOpen(false)}
-                >
-                  get started →
-                </button>
-              </SignUpButton>
-            </Show>
-            <Show when="signed-in">
-              <Link
-                href="/dashboard"
-                className="rounded-full bg-white px-5 py-3 text-center text-lg font-medium lowercase text-black transition-colors hover:bg-zinc-200"
-                onClick={() => setIsOpen(false)}
-              >
-                dashboard →
-              </Link>
-            </Show>
+            <Link
+              href="/dashboard"
+              className="text-left text-lg lowercase text-zinc-200 hover:text-white"
+              onClick={() => setIsOpen(false)}
+            >
+              dashboard
+            </Link>
+            <Link
+              href="/dashboard"
+              className="rounded-full bg-white px-5 py-3 text-center text-lg font-medium lowercase text-black transition-colors hover:bg-zinc-200"
+              onClick={() => setIsOpen(false)}
+            >
+              get started →
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>
